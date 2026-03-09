@@ -31,3 +31,5 @@ Canonical workflow (modular):
 
 - Integration/comparability: `INTEGRATION_COMPARABILITY_GUIDE.md`
 - Enhancement roadmap: `ANALYSIS_ENHANCEMENT_PLAN.md`
+
+- HooEtAlEnhanced review: `HooEtAlEnhanced/README_REVIEW_AND_RUN.md`
