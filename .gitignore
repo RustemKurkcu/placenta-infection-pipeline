@@ -1,0 +1,7 @@
+﻿# ignore pipeline zip output (we will upload as Release instead)
+pipeline_zips/
+*.zip
+*.7z
+# system / editor
+.DS_Store
+.vscode/
