@@ -20,11 +20,11 @@ suppressPackageStartupMessages({
 
 # --- Configuration ---
 CFG <- list(
-  qs_seurat = "data/02_processed/seurat_object.qs",
-  fig_dir   = "results/figures",
-  tab_dir   = "results/tables",
-  leg_dir   = "results/legends",
-  log_dir   = "results/logs"
+  qs_seurat = "data/seu.qs",
+  fig_dir   = "outputs/figures",
+  tab_dir   = "outputs/tables",
+  leg_dir   = "outputs/legends",
+  log_dir   = "outputs/logs"
 )
 
 # --- Create Dirs ---
@@ -116,9 +116,9 @@ log_msg("Starting Pseudobulk DE...")
 target_cell_types <- c("VCT", "EVT_1", "HBC", "PAMM1")
 contrasts <- c("Lm_24h - UI_24h", "Lm_48h - UI_48h") # Add Pf/Tg if needed
 
-run_de <- function(seu_obj, cell_type) {
-  log_msg("Processing DE for:", cell_type)
-  sub <- subset(seu_obj, subset = cell_type == cell_type)
+run_de <- function(seu_obj, ct_label) {
+  log_msg("Processing DE for:", ct_label)
+  sub <- subset(seu_obj, subset = cell_type == ct_label)
   if (ncol(sub) < 50) return(NULL)
   
   # 1. Aggregate
@@ -152,7 +152,7 @@ run_de <- function(seu_obj, cell_type) {
       res <- topTags(qlf, n=Inf)$table
       
       # Save Table
-      fname <- paste0("DE_", cell_type, "_", k, ".csv")
+      fname <- paste0("DE_", ct_label, "_", k, ".csv")
       write.csv(res, file.path(CFG$tab_dir, fname))
       log_msg("Saved DE Table:", fname)
       
@@ -165,15 +165,17 @@ run_de <- function(seu_obj, cell_type) {
         geom_point(alpha=0.5) + theme_minimal() +
         scale_color_manual(values=c("grey", "red")) +
         geom_text_repel(data=head(res, 10), aes(label=gene), color="black") +
-        ggtitle(paste("Volcano:", cell_type, k))
+        ggtitle(paste("Volcano:", ct_label, k))
       
-      save_plot(paste0("Fig_Volcano_", cell_type, "_", k, ".pdf"), p_vol)
+      save_plot(paste0("Fig_Volcano_", ct_label, "_", k, ".pdf"), p_vol)
       
     }, silent=TRUE)
   }
 }
 
 for(ct in target_cell_types) run_de(seu, ct)
+
+log_msg("NOTE: legacy script retained for compatibility; prefer scripts/01_load_make_seurat.R + 02..06 modular pipeline.")
 
 # 7. NK CELL CHECK (From your script)
 # ------------------------------------------------------------------------------

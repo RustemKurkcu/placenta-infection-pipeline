@@ -29,12 +29,12 @@ suppressPackageStartupMessages({
 # CONFIG
 # -------------------------------
 CFG <- list(
-  qs_seurat = "data/02_processed/seurat_object.qs",
-  out_dir   = "results",
-  fig_dir   = "results/figures",
-  tab_dir   = "results/tables",
-  leg_dir   = "results/legends",
-  log_dir   = "results/logs"
+  qs_seurat = "data/seu.qs",
+  out_dir   = "outputs",
+  fig_dir   = "outputs/figures",
+  tab_dir   = "outputs/tables",
+  leg_dir   = "outputs/legends",
+  log_dir   = "outputs/logs"
 )
 
 dir.create(CFG$out_dir, recursive=TRUE, showWarnings=FALSE)
