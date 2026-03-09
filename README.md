@@ -1,47 +1,33 @@
-# Placental infection scRNA-seq pipeline (Seurat)
+# Placenta infection pipeline
 
-This project is a **reproducible, organized** workflow to:
-1) load a Seurat object (or build one from h5ad / CellxGene downloads),
-2) generate core figures (UMAPs, composition),
-3) compute **proxy signatures** (glycocalyx/glyco, adhesion, innate severity),
-4) test the **susceptibility vs severity** idea at cell and pseudo-bulk (sample) levels,
-5) audit the **"NK-like / cytotoxic-like"** signal and decide whether it is real or artifact.
+Canonical workflow (modular):
 
-## Quick start
+1. `scripts/01_load_make_seurat.R`
+2. `scripts/02_qc_overview.R`
+3. `scripts/03_core_umaps_and_composition.R`
+4. `scripts/04_gene_sets_scores_plots.R`
+5. `scripts/05_susceptibility_severity_models.R`
+6. `scripts/06_nk_cytotoxic_module.R`
+7. `scripts/07_integration_sensitivity.R`
+8. `scripts/08_organoid_vs_placenta_comparison.R`
+9. `scripts/09_reproducibility_report.R`
 
-1. Open RStudio in this project folder (or set working directory here).
-2. Install packages:
-   - run `00_setup/00_install_packages.R`
-3. Run the pipeline:
-   - `source("scripts/01_load_make_seurat.R")`
-   - `source("scripts/02_qc_overview.R")`
-   - `source("scripts/03_core_umaps_and_composition.R")`
-   - `source("scripts/04_gene_sets_scores_plots.R")`
-   - `source("scripts/05_susceptibility_severity_models.R")`
-   - `source("scripts/06_nk_cytotoxic_module.R")`
+## Required inputs
 
-Outputs are written to `outputs/`:
-- `outputs/figures/`  (PDF/PNG figures)
-- `outputs/legends/`  (one Markdown file per figure: hypothesis, methods, readout, interpretation template)
-- `outputs/tables/`   (CSVs)
-- `outputs/objects/`  (saved Seurat objects)
+- `data/seu.qs` (or `data/seu.rds`, configurable in `R/config.R`)
+- gene sets:
+  - `gene_sets/glyco_genes.txt`
+  - `gene_sets/adhesion_genes.txt`
+  - `gene_sets/innate_genes.txt`
 
-## Where to put your data
+## Notes
 
-- Put your Seurat object in `data/` (recommended name: `seu.rds` or `seu.qs`)
-- If starting from h5ad, edit `scripts/01_load_make_seurat.R` and set `CFG$data$h5ad_path`.
+- Use non-integrated RNA counts for pseudobulk DE inference.
+- Use integration (RPCA/Harmony) as a sensitivity analysis for comparability; see `INTEGRATION_COMPARABILITY_GUIDE.md`.
+- `scripts/placenta_fn_pipeline.R` is retained as a legacy compatibility script.
 
-## Core hypothesis
 
-**Susceptibility hypothesis:** cell states with higher *entry/attachment surface programs*
-(e.g., epithelial adhesion, glycocalyx / glycan / proteoglycan features) are **more permissive**
-to placental pathogen interaction.
+## Advanced guidance
 
-**Severity hypothesis:** infections that invade/replicate more effectively trigger stronger
-**innate inflammatory programs** (in immune and/or trophoblast compartments) and may shift
-cell-type composition.
-
-The scripts operationalize these ideas with:
-- **proxy gene sets** (glyco/adhesion/innate),
-- per-cell signature overlays and per-sample pseudo-bulk summaries,
-- comparisons across **infection (UI/Lm/Pf/Tg)** and **time (24h/48h)**.
+- Integration/comparability: `INTEGRATION_COMPARABILITY_GUIDE.md`
+- Enhancement roadmap: `ANALYSIS_ENHANCEMENT_PLAN.md`
