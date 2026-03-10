@@ -8,6 +8,29 @@ suppressPackageStartupMessages({
   library(qs)
 })
 
+run_harmony_compat <- function(seu_obj, batch_col, dims = 1:30) {
+  fn <- get("RunHarmony", envir = asNamespace("harmony"))
+  fn_formals <- names(formals(fn))
+
+  args <- list(
+    object = seu_obj,
+    group.by.vars = batch_col,
+    verbose = FALSE
+  )
+
+  # Handle API differences between harmony versions.
+  if ("reduction" %in% fn_formals) {
+    args$reduction <- "pca"
+  } else if ("reduction.use" %in% fn_formals) {
+    args$reduction.use <- "pca"
+  }
+
+  if ("dims.use" %in% fn_formals) args$dims.use <- dims
+  if ("assay.use" %in% fn_formals) args$assay.use <- "RNA"
+
+  do.call(fn, args)
+}
+
 log_file <- file.path(CFG$dirs$logs, "pipeline.log")
 log_msg("07_integration_sensitivity starting.", log_file = log_file)
 
@@ -20,7 +43,20 @@ if (!batch_col %in% colnames(seu@meta.data)) stop("Missing donor/batch column: "
 
 # Base preprocessing for PCA
 seu <- NormalizeData(seu, verbose = FALSE)
-seu <- FindVariableFeatures(seu, nfeatures = 3000, verbose = FALSE)
+
+# Guard against memory spikes on large objects.
+seu <- tryCatch(
+  {
+    FindVariableFeatures(seu, nfeatures = 3000, verbose = FALSE)
+  },
+  error = function(e) {
+    log_msg("FindVariableFeatures(3000) failed: ", conditionMessage(e), 
+            ". Retrying with nfeatures=2000.", log_file = log_file)
+    gc()
+    FindVariableFeatures(seu, nfeatures = 2000, verbose = FALSE)
+  }
+)
+
 seu <- ScaleData(seu, features = VariableFeatures(seu), verbose = FALSE)
 seu <- RunPCA(seu, features = VariableFeatures(seu), npcs = 50, verbose = FALSE)
 
@@ -29,14 +65,7 @@ seu <- RunUMAP(seu, dims = 1:30, reduction = "pca", reduction.name = "umap_rna",
 
 # 2) Harmony embedding (if package is available)
 if (requireNamespace("harmony", quietly = TRUE)) {
-  seu <- harmony::RunHarmony(
-    object = seu,
-    group.by.vars = batch_col,
-    reduction = "pca",
-    assay.use = "RNA",
-    dims.use = 1:30,
-    verbose = FALSE
-  )
+  seu <- run_harmony_compat(seu_obj = seu, batch_col = batch_col, dims = 1:30)
   seu <- RunUMAP(seu, dims = 1:30, reduction = "harmony", reduction.name = "umap_harmony", verbose = FALSE)
 
   p_h1 <- DimPlot(seu, reduction = "umap_harmony", group.by = CFG$cols$cell_type, raster = TRUE) +

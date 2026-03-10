@@ -54,6 +54,9 @@ powershell.exe -ExecutionPolicy Bypass -File .\local_runner\04_run_everything.ps
 - The previous PowerShell one-shot script could continue to collection even when R failed; this is now fixed (`04_run_everything.ps1` exits on pipeline failure).
 - `02_run_pipeline.ps1` now captures stdout+stderr via `cmd.exe` redirection, avoiding the `Start-Process` same-file redirection error.
 - `Rscript.exe : Warning messages:` lines are not automatically fatal. Check the script-specific log in `outputs/logs/*.log` and the master status in `outputs/logs/local_runner_master.log`.
+- If `scripts/07_integration_sensitivity.R` fails with Harmony argument mismatch (e.g., `argument 3 matches multiple formal arguments`), pull latest changes; the script now auto-detects Harmony API variants.
+- If you hit `std::bad_alloc` during variable-feature selection, the script now retries with a smaller feature set automatically.
+- Avoid `write.csv()` on sparse assay matrices (`@data`); it forces sparse→dense conversion and can request >40 GiB RAM.
 
 ## Output layout
 
