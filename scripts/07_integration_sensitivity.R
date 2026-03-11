@@ -80,20 +80,14 @@ seu_int <- downsample_for_speed(seu, max_cells = 80000, seed = 42)
 log_msg("Integration sensitivity running on ", ncol(seu_int), " cells (from ", ncol(seu), ").", log_file = log_file)
 
 # Base preprocessing for PCA
-seu_int <- NormalizeData(seu_int, verbose = FALSE)
+seu <- NormalizeData(seu, verbose = FALSE)
 
-seu_int <- tryCatch(
-  FindVariableFeatures(seu_int, nfeatures = 3000, verbose = FALSE),
-  error = function(e) {
-    log_msg("FindVariableFeatures(3000) failed: ", conditionMessage(e),
-            ". Retrying with nfeatures=2000.", log_file = log_file)
-    gc()
-    FindVariableFeatures(seu_int, nfeatures = 2000, verbose = FALSE)
-  }
-)
-
-seu_int <- ScaleData(seu_int, features = VariableFeatures(seu_int), verbose = FALSE)
-seu_int <- RunPCA(seu_int, features = VariableFeatures(seu_int), npcs = 50, verbose = FALSE)
+# Guard against memory spikes on large objects.
+# Base preprocessing for PCA
+seu <- NormalizeData(seu, verbose = FALSE)
+seu <- FindVariableFeatures(seu, nfeatures =4000, verbose = FALSE)
+seu <- ScaleData(seu, features = VariableFeatures(seu), verbose = FALSE)
+seu <- RunPCA(seu, features = VariableFeatures(seu), npcs = 50, verbose = FALSE)
 
 # 1) Non-integrated embeddings
 seu_int <- RunUMAP(

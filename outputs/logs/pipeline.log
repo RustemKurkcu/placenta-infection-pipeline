@@ -1,0 +1,43 @@
+[2025-12-27 19:36:39] 01_load_make_seurat starting. 
+[2025-12-27 19:36:40] 02_qc_overview starting. 
+[2025-12-27 19:38:01] 01_load_make_seurat starting. 
+[2025-12-27 19:38:30] 01_load_make_seurat starting. 
+[2025-12-27 20:00:24] 01_load_make_seurat starting. 
+[2025-12-27 20:02:19] 02_qc_overview starting. 
+[2025-12-27 20:02:21] 03_core_umaps_and_composition starting. 
+[2025-12-27 20:02:23] 04_gene_sets_scores_plots starting. 
+[2025-12-27 20:02:25] 05_susceptibility_severity_models starting. 
+[2025-12-27 20:02:33] 02_qc_overview starting. 
+[2025-12-27 20:08:35] 02_qc_overview done. 
+[2025-12-27 20:08:35] 03_core_umaps_and_composition starting. 
+[2025-12-27 20:32:34] Saved objects to outputs/objects. 01_load_make_seurat done. 
+[2025-12-27 20:35:12] 02_qc_overview done. 
+[2025-12-27 20:40:54] 03_core_umaps_and_composition done. 
+[2025-12-27 20:48:23] 04_gene_sets_scores_plots starting. 
+[2025-12-27 20:50:52] 04_gene_sets_scores_plots done. 
+[2025-12-28 13:59:37] 04_gene_sets_scores_plots done. 
+[2025-12-28 14:01:20] 05_susceptibility_severity_models starting. 
+[2025-12-28 14:01:45] 05_susceptibility_severity_models done. 
+[2025-12-28 14:02:02] 06_nk_cytotoxic_module starting. 
+[2025-12-28 14:03:35] 06_nk_cytotoxic_module done. 
+[2026-03-09 20:26:41] 01_load_make_seurat starting. 
+[2026-03-09 20:26:41] Loading Seurat from qs:  data/seu.qs 
+[2026-03-10 13:38:30] 01_load_make_seurat starting. 
+[2026-03-10 13:38:30] Loading Seurat from qs:  data/seu.qs 
+[2026-03-10 13:53:24] 01_load_make_seurat starting. 
+[2026-03-10 13:53:24] Loading Seurat from qs:  data/seu.qs 
+[2026-03-10 14:02:18] Saved objects to outputs/objects. 01_load_make_seurat done. 
+[2026-03-10 14:02:22] 02_qc_overview starting. 
+[2026-03-10 14:03:29] 02_qc_overview done. 
+[2026-03-10 14:03:32] 03_core_umaps_and_composition starting. 
+[2026-03-10 14:04:38] 03_core_umaps_and_composition done. 
+[2026-03-10 14:04:41] 04_gene_sets_scores_plots starting. 
+[2026-03-10 14:06:42] 04_gene_sets_scores_plots done. 
+[2026-03-10 14:06:45] 05_susceptibility_severity_models starting. 
+[2026-03-10 14:07:03] 05_susceptibility_severity_models done. 
+[2026-03-10 14:07:06] 06_nk_cytotoxic_module starting. 
+[2026-03-10 14:08:17] 06_nk_cytotoxic_module done. 
+[2026-03-10 14:08:21] 07_integration_sensitivity starting. 
+[2026-03-10 14:22:38] 07_integration_sensitivity starting. 
+[2026-03-10 15:04:34] 07_integration_sensitivity starting. 
+[2026-03-10 15:09:53] FindVariableFeatures(3000) failed:  std::bad_alloc . Retrying with nfeatures=2000. 
