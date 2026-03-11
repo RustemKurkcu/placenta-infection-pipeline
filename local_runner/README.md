@@ -57,6 +57,8 @@ powershell.exe -ExecutionPolicy Bypass -File .\local_runner\04_run_everything.ps
 - If `scripts/07_integration_sensitivity.R` fails with Harmony argument mismatch (e.g., `argument 3 matches multiple formal arguments`), pull latest changes; the script now auto-detects Harmony API variants.
 - If you hit `std::bad_alloc` during variable-feature selection, the script now retries with a smaller feature set automatically.
 - Avoid `write.csv()` on sparse assay matrices (`@data`); it forces sparse→dense conversion and can request >40 GiB RAM.
+- Harmony may print `Quick-TRANSfer stage steps exceeded maximum`; this is usually a non-fatal k-means warning from Harmony internals. Check whether output figures were still produced before treating it as a hard failure.
+- Script 07 now down-samples very large objects (default max 80k cells) for faster integration sensitivity plots; this is intentional for speed/QC visualization.
 
 ## Output layout
 
