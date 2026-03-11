@@ -11,23 +11,23 @@ suppressPackageStartupMessages({
 run_harmony_compat <- function(seu_obj, batch_col, dims = 1:30) {
   fn <- get("RunHarmony", envir = asNamespace("harmony"))
   fn_formals <- names(formals(fn))
-
+  
   args <- list(
     object = seu_obj,
     group.by.vars = batch_col,
     verbose = FALSE
   )
-
+  
   # Handle API differences between harmony versions.
   if ("reduction" %in% fn_formals) {
     args$reduction <- "pca"
   } else if ("reduction.use" %in% fn_formals) {
     args$reduction.use <- "pca"
   }
-
+  
   if ("dims.use" %in% fn_formals) args$dims.use <- dims
   if ("assay.use" %in% fn_formals) args$assay.use <- "RNA"
-
+  
   do.call(fn, args)
 }
 
@@ -45,18 +45,9 @@ if (!batch_col %in% colnames(seu@meta.data)) stop("Missing donor/batch column: "
 seu <- NormalizeData(seu, verbose = FALSE)
 
 # Guard against memory spikes on large objects.
-seu <- tryCatch(
-  {
-    FindVariableFeatures(seu, nfeatures = 3000, verbose = FALSE)
-  },
-  error = function(e) {
-    log_msg("FindVariableFeatures(3000) failed: ", conditionMessage(e), 
-            ". Retrying with nfeatures=2000.", log_file = log_file)
-    gc()
-    FindVariableFeatures(seu, nfeatures = 2000, verbose = FALSE)
-  }
-)
-
+# Base preprocessing for PCA
+seu <- NormalizeData(seu, verbose = FALSE)
+seu <- FindVariableFeatures(seu, nfeatures =4000, verbose = FALSE)
 seu <- ScaleData(seu, features = VariableFeatures(seu), verbose = FALSE)
 seu <- RunPCA(seu, features = VariableFeatures(seu), npcs = 50, verbose = FALSE)
 
@@ -67,18 +58,18 @@ seu <- RunUMAP(seu, dims = 1:30, reduction = "pca", reduction.name = "umap_rna",
 if (requireNamespace("harmony", quietly = TRUE)) {
   seu <- run_harmony_compat(seu_obj = seu, batch_col = batch_col, dims = 1:30)
   seu <- RunUMAP(seu, dims = 1:30, reduction = "harmony", reduction.name = "umap_harmony", verbose = FALSE)
-
+  
   p_h1 <- DimPlot(seu, reduction = "umap_harmony", group.by = CFG$cols$cell_type, raster = TRUE) +
     ggtitle("Harmony UMAP by cell type")
   p_h2 <- DimPlot(seu, reduction = "umap_harmony", group.by = batch_col, raster = TRUE) +
     ggtitle("Harmony UMAP by donor")
   p_h3 <- DimPlot(seu, reduction = "umap_harmony", group.by = CFG$cols$infection, raster = TRUE) +
     ggtitle("Harmony UMAP by infection")
-
+  
   save_plot(file.path(CFG$dirs$figures, "Fig16_Harmony_UMAP_cell_type.pdf"), p_h1, w = 12, h = 8)
   save_plot(file.path(CFG$dirs$figures, "Fig17_Harmony_UMAP_donor.pdf"), p_h2, w = 12, h = 8)
   save_plot(file.path(CFG$dirs$figures, "Fig18_Harmony_UMAP_infection.pdf"), p_h3, w = 12, h = 8)
-
+  
   write_legend(
     "Fig16-18", "Integration sensitivity with Harmony",
     hypothesis = "Cross-donor comparability can improve after batch correction without erasing infection biology.",
