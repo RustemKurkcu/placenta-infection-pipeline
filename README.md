@@ -12,6 +12,9 @@ Canonical workflow (modular):
 8. `scripts/08_organoid_vs_placenta_comparison.R`
 9. `scripts/09_reproducibility_report.R`
 
+Optional advanced mapping:
+- `scripts/13_fib2_reference_mapping.R` (Slide-tags architecture transfer + conservative refinement)
+
 ## Required inputs
 
 - `data/seu.qs` (or `data/seu.rds`, configurable in `R/config.R`)
@@ -31,3 +34,5 @@ Canonical workflow (modular):
 
 - Integration/comparability: `INTEGRATION_COMPARABILITY_GUIDE.md`
 - Enhancement roadmap: `ANALYSIS_ENHANCEMENT_PLAN.md`
+
+- HooEtAlEnhanced review: `HooEtAlEnhanced/README_REVIEW_AND_RUN.md`
