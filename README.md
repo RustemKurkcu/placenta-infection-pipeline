@@ -12,6 +12,11 @@ Canonical workflow (modular):
 8. `scripts/08_organoid_vs_placenta_comparison.R`
 9. `scripts/09_reproducibility_report.R`
 
+Optional advanced mapping:
+- `scripts/13_fib2_reference_mapping.R` (Slide-tags architecture transfer + conservative refinement)
+- `scripts/14_make_readable_embedding_figures.R` (rebuild clearer, human-readable embedding panels)
+- `scripts/15_figure_readability_audit.R` (flag likely unreadable/missing-legend figures)
+
 ## Required inputs
 
 - `data/seu.qs` (or `data/seu.rds`, configurable in `R/config.R`)
