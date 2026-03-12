@@ -1,0 +1,18 @@
+Warning messages:
+1: package 'Seurat' was built under R version 4.4.3 
+2: package 'SeuratObject' was built under R version 4.4.3 
+3: package 'sp' was built under R version 4.4.3 
+4: package 'ggplot2' was built under R version 4.4.3 
+5: package 'stringr' was built under R version 4.4.3 
+6: package 'qs' was built under R version 4.4.3 
+[2026-03-10 14:04:41] 04_gene_sets_scores_plots starting.
+AddModuleScore failed for GlycoScore: invalid first argument
+Falling back to mean signature scoring (no matched controls).
+AddModuleScore failed for AdhesionScore: invalid first argument
+Falling back to mean signature scoring (no matched controls).
+AddModuleScore failed for InnateScore: invalid first argument
+Falling back to mean signature scoring (no matched controls).
+Warning message:
+In grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y,  :
+  for 'UMAP: AdhesionScore (white→red)' in 'mbcsToSbcs': -> substituted for → (U+2192)
+[2026-03-10 14:06:42] 04_gene_sets_scores_plots done.
