@@ -1,0 +1,6 @@
+"pathogen","placental_crossing","ethanolamine_utilization","BMC_support","H2S_generation","endothelial_dysfunction_evidence","antiangiogenic_FLT1_link","preeclampsia_association","notes"
+"Fusobacterium_nucleatum",1,1,1,1,1,0.5,1,"Central hypothesis organism; strongest MegL/H2S + EA/BMC logic, but direct PE causality is not yet proven."
+"Listeria_monocytogenes",1,1,1,0,0.5,0,0,"Best EA-positive / MegL-negative comparator."
+"Porphyromonas_gingivalis",0.5,0,0,1,1,0.5,1,"Best oral/endothelial comparator for host dysfunction."
+"Toxoplasma_gondii",1,0,0,0,0,0,0,"Useful negative control for broad inflammation vs vascular/EA mechanisms."
+"Plasmodium_falciparum",0,0,0,0,1,1,0.5,"Positive control for placental vascular stress and FLT1/PGF disruption."
